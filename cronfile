@@ -1,0 +1,1 @@
+00 10 * * * docker-gen -only-exposed -notify "/createSSL.sh" /app/ssl.tmpl /createSSL.sh 
