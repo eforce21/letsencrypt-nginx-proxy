@@ -1,0 +1,12 @@
+#!/bin/bash -e
+mkdir -p /var/www/letsencrypt
+
+{{ range $host, $containers := groupByMulti $ "Env.VIRTUAL_HOST" "," }}
+
+/letsencrypt/letsencrypt-auto certonly --keep-until-expiring --webroot -w /var/www/letsencrypt -d {{ $host }}
+ln -sf /etc/letsencrypt/live/{{ $host }}/fullchain.pem /etc/nginx/certs/{{ $host }}.crt
+ln -sf /etc/letsencrypt/live/{{ $host }}/privkey.pem /etc/nginx/certs/{{ $host }}.key
+
+{{ end }}
+
+docker-gen -only-exposed -notify "nginx -s reload" /app/nginx.tmpl /etc/nginx/conf.d/default.conf
