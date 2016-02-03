@@ -13,4 +13,6 @@ To run it:
 That's about it already.
 
 ### Configuration
+You can configure the email address that should be used for certificate generation with letsencrypt with the environment variable `LETSENCRYPT_EMAIL`. If you do not set it, the email address will defaul to `info@vHost`.
+
 If there's anything else you want to configure. Please also have a look at [jwilder/nginx-proxy](https://github.com/jwilder/nginx-proxy/). There you'll find more beautiful documentation on how to do more magic with this reverse proxy.
