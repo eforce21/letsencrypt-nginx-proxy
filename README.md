@@ -14,7 +14,7 @@ That's about it already. If you want to run it without `docker-compose` it would
    `docker run -d --name nginx-proxy -v /var/run/docker.sock:/tmp/docker.sock:ro -e LETSENCRYPT_EMAIL=<your_email@domain.de> --restart=always eforce21/letsencrypt-nginx-proxy`
 
 ### Configuration
-You can configure the email address that should be used for certificate generation with letsencrypt with the environment variable `LETSENCRYPT_EMAIL`. If you do not set it, the email address will defaul to `info@vHost`.
+You can configure the email address that should be used for certificate generation with letsencrypt with the environment variable `LETSENCRYPT_EMAIL`. If you do not set it, the email address will defaul to `info@VIRTUAL_HOST`.
 
 If there's anything else you want to configure. Please also have a look at [jwilder/nginx-proxy](https://github.com/jwilder/nginx-proxy/). There you'll find more beautiful documentation on how to do more magic with this reverse proxy.
 
