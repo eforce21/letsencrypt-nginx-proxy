@@ -3,7 +3,12 @@ mkdir -p /var/www/letsencrypt
 
 {{ range $host, $containers := groupByMulti $ "Env.VIRTUAL_HOST" "," }}
 
-/letsencrypt/letsencrypt-auto certonly --email info@{{ $host }} --agree-tos --keep-until-expiring --webroot -w /var/www/letsencrypt -d {{ $host }}
+{{ if $.Env.LETSENCRYPT_EMAIL }}
+	/letsencrypt/letsencrypt-auto certonly --email {{ $.Env.LETSENCRYPT_EMAIL }} --agree-tos --keep-until-expiring --webroot -w /var/www/letsencrypt -d {{ $host }}
+{{ else }}
+	/letsencrypt/letsencrypt-auto certonly --email info@{{ $host }} --agree-tos --keep-until-expiring --webroot -w /var/www/letsencrypt -d {{ $host }}
+{{ end }}
+	
 ln -sf /etc/letsencrypt/live/{{ $host }}/fullchain.pem /etc/nginx/certs/{{ $host }}.crt
 ln -sf /etc/letsencrypt/live/{{ $host }}/privkey.pem /etc/nginx/certs/{{ $host }}.key
 
