@@ -8,10 +8,11 @@ If you want to run it without SSL support, please have a look at the page for th
 
 To run it:
 
-    $ docker-compose up -d
+    `docker-compose up -d`
 
 That's about it already. If you want to run it without `docker-compose` it would like this:
-    $ docker run -d --name nginx-proxy -v /var/run/docker.sock:/tmp/docker.sock:ro -e LETSENCRYPT_EMAIL=<your_email@domain.de> --restart=always eforce21/letsencrypt-nginx-proxy
+
+   `docker run -d --name nginx-proxy -v /var/run/docker.sock:/tmp/docker.sock:ro -e LETSENCRYPT_EMAIL=<your_email@domain.de> --restart=always eforce21/letsencrypt-nginx-proxy`
 
 ### Configuration
 You can configure the email address that should be used for certificate generation with letsencrypt with the environment variable `LETSENCRYPT_EMAIL`. If you do not set it, the email address will defaul to `info@vHost`.
