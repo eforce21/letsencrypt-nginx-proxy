@@ -7,7 +7,6 @@ In addition to the functionality that [jwilder/nginx-proxy](https://github.com/j
 If you want to run it without SSL support, please have a look at the page for the  [jwilder/nginx-proxy](https://github.com/jwilder/nginx-proxy/). That's what you're actually looking for.
 
 To run it:
-
     `docker-compose up -d`
 
 That's about it already. If you want to run it without `docker-compose` it would like this:
