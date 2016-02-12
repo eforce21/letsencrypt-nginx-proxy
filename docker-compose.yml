@@ -1,5 +1,5 @@
 rproxy :
-  build: .
+  image: eforce21/letsencrypt-nginx-proxy:1.0.1
   ports:
     - "80:80"
     - "443:443"
