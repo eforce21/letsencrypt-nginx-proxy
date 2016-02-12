@@ -6,5 +6,5 @@ rproxy :
   volumes:
     - "/var/run/docker.sock:/tmp/docker.sock:ro"
   environment:
-    - LETSENCRYPT_EMAIL=<your_email@domain.de>
+    #- LETSENCRYPT_EMAIL=<your_email@domain.de>
   restart: always   
