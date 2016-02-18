@@ -22,3 +22,6 @@ If there's anything else you want to configure. Please also have a look at [jwil
 We use [Let's Encrypt](https://letsencrypt.org/) to generate the SSL certificates. Those certificates are free and expire every 3 months.
 We use [docker-gen](https://github.com/jwilder/docker-gen) to watch for starting containers and generate a shell-script that will run [Let's Encrypt](https://letsencrypt.org/). This will give you a SSL certificate in a matter of a couple of seconds. (So please don't worry when the certificate won't show up right after you start the container for the first time!). We use the `--keep-until-expiring` flag so you hopefully don't run into [beta restrictions](https://community.letsencrypt.org/t/public-beta-rate-limits/4772). That means the certificate will be renewed if it expires in 10 or less days automatically on container (re)start.
 Additional we have `cron` installed in the container to check regularly that your SSL certificates don't expire as you might not (re)start your containers every 3 months. That check will be performed at 10am. If you want to change that, just change it in the `cronfile`.
+
+### Docker Tags
+`latest` is always taken from develop branch. Please do NOT consider it production ready. Use the versioned tags instead for production please!
