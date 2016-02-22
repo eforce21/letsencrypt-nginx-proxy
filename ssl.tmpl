@@ -1,7 +1,11 @@
 #!/bin/bash -e
 mkdir -p /var/www/letsencrypt
 
-{{ $sslContainers := whereLabelDoesNotExist $ "letsencrypt.nocert" }}
+{{ $optIn := contains $.Env "LETSENCRYPT_OPT_IN" }}
+{{ $optInContainers := whereLabelExists $ "letsencrypt.cert" }}
+{{ $optOutContainers := whereLabelDoesNotExist $ "letsencrypt.nocert" }}
+{{ $sslContainers := when $optIn $optInContainers $optOutContainers }} 
+
 {{ $containersForGeneration := groupByMulti $sslContainers "Env.VIRTUAL_HOST" "," }}
 
 {{ range $containers := $containersForGeneration }}
