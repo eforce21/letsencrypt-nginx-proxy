@@ -16,8 +16,17 @@ That's about it already. If you want to run it without `docker-compose` it would
 ### Configuration
 You can configure the email address that should be used for certificate generation with letsencrypt with the environment variable `LETSENCRYPT_EMAIL`. If you do not set it, the email address will defaul to `info@VIRTUAL_HOST`.
 
-If you don't want SSL support for a certain container you can now add a label to prevent certificate generation: `letsencrypt.nocert`. The value you assign is not checked right now. Only the existence of the label is enough to exclude for certificate generation. That's how it would look like with a run command: `docker run -tid --label letsencrypt.nocert=true -e VIRTUAL_HOST=<your_domain> ubuntu`
+#### Opt Out of Certificate Generation (default)
+By default this proxy will attempt to obtain a certificate for all containers that have a VIRTUAL_HOST environment variable. If you don't want SSL support for a certain container you can add a label to prevent certificate generation: `letsencrypt.nocert`. The value you assign is not checked right now. Only the existence of the label is enough to exclude for certificate generation. That's how it would look like with a run command: `docker run -tid --label letsencrypt.nocert=true -e VIRTUAL_HOST=<your_domain> ubuntu`
 
+#### Opt In to Certificate Generation
+Alternatively, you can configure the proxy to never generate a certificate for a container unless it defines a label to request certificate generation.  To do this you will need to start the container with the environment variable LETSENCRYPT_OPT_IN. THe run command would look like this:
+
+  `docker run -d --name nginx-proxy -v /var/run/docker.sock:/tmp/docker.sock:ro -e LETSENCRYPT_EMAIL=<your_email@domain.de> -e LETSENCRYPT_OPT_IN=true --restart=always eforce21/letsencrypt-nginx-proxy`
+
+When the `LETSENCRYPT_OPT_IN` variable is present the proxy will look for containers with the label `letsencrypt.cert` and will generate certificate requests for them if they also have the `VIRTUAL_HOST` variable set. The run command would look like this: `docker run -tid --label letsencrypt.cert=true -e VIRTUAL_HOST=<your_domain> ubuntu`
+
+#### Other Configuration
 If there's anything else you want to configure. Please also have a look at [jwilder/nginx-proxy](https://github.com/jwilder/nginx-proxy/). There you'll find more beautiful documentation on how to do more magic with this reverse proxy.
 
 ### How does it work?
