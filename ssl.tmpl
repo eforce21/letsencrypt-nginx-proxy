@@ -1,17 +1,24 @@
 #!/bin/bash -e
 mkdir -p /var/www/letsencrypt
 
-{{ range $host, $containers := groupByMulti $ "Env.VIRTUAL_HOST" "," }}
+{{ $optIn := contains $.Env "LETSENCRYPT_OPT_IN" }}
+{{ $optInContainers := whereLabelExists $ "letsencrypt.cert" }}
+{{ $optOutContainers := whereLabelDoesNotExist $ "letsencrypt.nocert" }}
+{{ $sslContainers := when $optIn $optInContainers $optOutContainers }} 
 
-{{ if $.Env.LETSENCRYPT_EMAIL }}
-	/letsencrypt/letsencrypt-auto certonly --email {{ $.Env.LETSENCRYPT_EMAIL }} --agree-tos --keep-until-expiring --webroot -w /var/www/letsencrypt -d {{ $host }}
-{{ else }}
-	/letsencrypt/letsencrypt-auto certonly --email info@{{ $host }} --agree-tos --keep-until-expiring --webroot -w /var/www/letsencrypt -d {{ $host }}
-{{ end }}
-	
-ln -sf /etc/letsencrypt/live/{{ $host }}/fullchain.pem /etc/nginx/certs/{{ $host }}.crt
-ln -sf /etc/letsencrypt/live/{{ $host }}/privkey.pem /etc/nginx/certs/{{ $host }}.key
+{{ $containersForGeneration := groupByMulti $sslContainers "Env.VIRTUAL_HOST" "," }}
 
-{{ end }}
+{{ range $containers := $containersForGeneration }}
+	{{ range $container := $containers }}
+		{{ if contains $container.Env "LETSENCRYPT_EMAIL" }}
+			/letsencrypt/letsencrypt-auto certonly --email {{ $container.Env.LETSENCRYPT_EMAIL }} --agree-tos --keep-until-expiring --webroot -w /var/www/letsencrypt -d {{ $container.Env.VIRTUAL_HOST }}
+		{{ else }}
+			/letsencrypt/letsencrypt-auto certonly --email info@{{ $container.Env.VIRTUAL_HOST }} --agree-tos --keep-until-expiring --webroot -w /var/www/letsencrypt -d {{ $container.Env.VIRTUAL_HOST }}
+		{{ end }}
+			
+		ln -sf /etc/letsencrypt/live/{{ $container.Env.VIRTUAL_HOST }}/fullchain.pem /etc/nginx/certs/{{ $container.Env.VIRTUAL_HOST }}.crt
+		ln -sf /etc/letsencrypt/live/{{ $container.Env.VIRTUAL_HOST }}/privkey.pem /etc/nginx/certs/{{ $container.Env.VIRTUAL_HOST }}.key
 
+		{{ end }}
+	{{ end }}
 docker-gen -only-exposed -notify "nginx -s reload" /app/nginx.tmpl /etc/nginx/conf.d/default.conf
