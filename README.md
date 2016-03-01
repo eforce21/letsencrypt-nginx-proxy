@@ -20,7 +20,7 @@ You can configure the email address that should be used for certificate generati
 By default this proxy will attempt to obtain a certificate for all containers that have a VIRTUAL_HOST environment variable. If you don't want SSL support for a certain container you can add a label to prevent certificate generation: `letsencrypt.nocert`. The value you assign is not checked right now. Only the existence of the label is enough to exclude for certificate generation. That's how it would look like with a run command: `docker run -tid --label letsencrypt.nocert=true -e VIRTUAL_HOST=<your_domain> ubuntu`
 
 #### Opt In to Certificate Generation
-Alternatively, you can configure the proxy to never generate a certificate for a container unless it defines a label to request certificate generation.  To do this you will need to start the container with the environment variable LETSENCRYPT_OPT_IN. THe run command would look like this:
+Alternatively, you can configure the proxy to never generate a certificate for a container unless it defines a label to request certificate generation.  To do this you will need to start the container with the environment variable LETSENCRYPT_OPT_IN. The run command would look like this:
 
   `docker run -d --name nginx-proxy -v /var/run/docker.sock:/tmp/docker.sock:ro -e LETSENCRYPT_EMAIL=<your_email@domain.de> -e LETSENCRYPT_OPT_IN=true --restart=always eforce21/letsencrypt-nginx-proxy`
 
