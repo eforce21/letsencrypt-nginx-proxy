@@ -1,6 +1,9 @@
 FROM jwilder/nginx-proxy:0.2.0
 
-RUN apt-get update && apt-get install --no-install-recommends -y git cron vim && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get update && apt-get install --no-install-recommends -y git cron vim \
+ python python-dev virtualenv python-virtualenv gcc dialog libaugeas0 augeas-lenses \ 
+ libssl-dev libffi-dev ca-certificates \
+ && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN systemctl enable cron
 RUN cd / && git clone https://github.com/letsencrypt/letsencrypt
 
