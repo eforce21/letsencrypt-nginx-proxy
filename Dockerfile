@@ -3,12 +3,11 @@ FROM jwilder/nginx-proxy:0.2.0
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 RUN apt-get -fy -o Dpkg::Options::="--force-confnew" --force-yes -fuy dist-upgrade
-RUN apt-get install --no-install-recommends -y git cron vim \
- python python-dev virtualenv python-virtualenv gcc dialog libaugeas0 augeas-lenses \ 
- libssl-dev libffi-dev ca-certificates \
- && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get install --no-install-recommends -y git cron vim 
 RUN systemctl enable cron
 RUN cd / && git clone https://github.com/letsencrypt/letsencrypt
+RUN /letsencrypt/letsencrypt-auto certonly || exit 0
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
 ENV DOCKER_GEN_VERSION 0.7.0
