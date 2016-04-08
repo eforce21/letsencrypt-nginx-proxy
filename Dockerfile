@@ -7,6 +7,7 @@ RUN apt-get install --no-install-recommends -y git cron vim
 RUN systemctl enable cron
 RUN cd / && git clone https://github.com/letsencrypt/letsencrypt
 RUN /letsencrypt/letsencrypt-auto certonly || exit 0
+RUN rm -rf /etc/letsencrypt/accounts/
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
