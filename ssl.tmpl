@@ -10,9 +10,9 @@ mkdir -p /var/www/letsencrypt
   {{ range $container := $containers }}
 #### begin {{ $host }}  ####
     {{ if contains $container.Env "LETSENCRYPT_EMAIL" }}
-      /letsencrypt/letsencrypt-auto certonly --email {{ $container.Env.LETSENCRYPT_EMAIL }} --agree-tos --keep-until-expiring --webroot -w /var/www/letsencrypt -d {{ $host }}
+      /certbot/certbot-auto certonly -n -t --email {{ $container.Env.LETSENCRYPT_EMAIL }} --agree-tos --keep-until-expiring --webroot -w /var/www/letsencrypt -d {{ $host }}
     {{ else }}
-      /letsencrypt/letsencrypt-auto certonly --email info@{{ $host }} --agree-tos --keep-until-expiring --webroot -w /var/www/letsencrypt -d {{ $host }}
+      /certbot/certbot-auto certonly -n -t --email info@{{ $host }} --agree-tos --keep-until-expiring --webroot -w /var/www/letsencrypt -d {{ $host }}
     {{ end }}
       
     ln -sf /etc/letsencrypt/live/{{ $host }}/fullchain.pem /etc/nginx/certs/{{ $host }}.crt
