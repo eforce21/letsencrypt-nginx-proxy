@@ -1,4 +1,4 @@
-FROM jwilder/nginx-proxy:0.3.0
+FROM jwilder/nginx-proxy:0.4.0
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV YES_FLAG=-y
@@ -17,7 +17,7 @@ RUN rm -rf /etc/letsencrypt/accounts/
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
-ENV DOCKER_GEN_VERSION 0.7.1
+ENV DOCKER_GEN_VERSION 0.7.3
 
 RUN wget https://github.com/jwilder/docker-gen/releases/download/$DOCKER_GEN_VERSION/docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz \
  && tar -C /usr/local/bin -xvzf docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz \
