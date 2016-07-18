@@ -13,6 +13,9 @@ That's about it already. If you want to run it without `docker-compose` it would
 
    `docker run -d --name nginx-proxy -v /var/run/docker.sock:/tmp/docker.sock:ro -e LETSENCRYPT_EMAIL=<your_email@domain.de> --restart=always eforce21/letsencrypt-nginx-proxy`
 
+### Volumes
+Letsencrypt saves the certificates in `/etc/letsencrypt/live`. From their, they are linked to the Nginx certificate folder `/etc/nginx/certs`. You might want to map either the first volume or both of them, if you like your certifacates to survice container recreation.
+   
 ### Configuration
 You can configure the email address that should be used for certificate generation with letsencrypt with the environment variable `LETSENCRYPT_EMAIL`. If you do not set it, the email address will defaul to `info@VIRTUAL_HOST`.
 
