@@ -19,6 +19,7 @@ RUN wget https://github.com/jwilder/docker-gen/releases/download/$DOCKER_GEN_VER
  && rm docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz
 
 VOLUME ["/etc/letsencrypt/live"]
+VOLUME ["/etc/letsencrypt/archive"]
 
 COPY etc /etc
 COPY ssl.tmpl /app/
