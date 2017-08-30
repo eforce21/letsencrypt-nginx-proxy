@@ -1,4 +1,4 @@
-FROM jwilder/nginx-proxy:0.4.0
+FROM jwilder/nginx-proxy:0.5.0
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV YES_FLAG=-y
@@ -14,6 +14,7 @@ RUN /certbot/certbot-auto certonly || exit 0
 #RUN cd / && git clone https://github.com/letsencrypt/letsencrypt
 #RUN /letsencrypt/letsencrypt-auto certonly || exit 0
 RUN rm -rf /etc/letsencrypt/accounts/
+RUN rm -rf /var/log/letsencrypt/*
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
